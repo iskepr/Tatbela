@@ -1,5 +1,5 @@
 @font-face {
-  font-family: IBM;
+  font-family: "IBM";
   src: url("assets/fonts/IBMPlexSansArabic-Bold.ttf");
 }
 /* ------------ */
@@ -7,7 +7,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  transition: 0.5s;
+  transition: all 0.5s ease-in-out;
 }
 ::-webkit-scrollbar {
   width: 5px;
@@ -37,8 +37,6 @@ span {
   color: var(--main-color);
 }
 .power {
-  color: var(--sac-color);
-  font-weight: 100;
   font-size: 15px;
 }
 #preloader {
@@ -94,7 +92,7 @@ header .logo img:hover {
 header .links a {
   padding: 10px;
 }
-header .links .activ,
+header .links .active,
 header .links a:hover {
   position: relative;
   padding: 10px 20px;
@@ -102,12 +100,39 @@ header .links a:hover {
 }
 /* section one */
 .secone {
-  padding: 20px 30px;
+  padding: 20px 3%;
 }
+.secone .back img {
+  z-index: -3;
+
+  position: absolute;
+  width: 100px;
+}
+.secone .back img:nth-child(1) {
+  width: 108px;
+  right: 1%;
+}
+.secone .back img:nth-child(2) {
+  width: 111px;
+  left: 10%;
+  bottom: -3%;
+}
+.secone .back img:nth-child(3) {
+  width: 85px;
+  bottom: 10%;
+  right: 10%;
+}
+.secone .back img:nth-child(4) {
+  width: 60px;
+  left: 1%;
+  top: 37%;
+}
+
 .secone .top {
   display: flex;
   justify-content: center;
   margin: 20px 0;
+  z-index: 4;
 }
 
 .secone .top .texts {
@@ -150,13 +175,13 @@ header .links a:hover {
 
 .secone .top .imgs {
   height: 300px;
-  max-width: 300px;
-  margin: 0 20px;
+  width: 320px;
   overflow-y: hidden;
+  border-radius: 20px;
 }
 .secone .top .imgs img {
   width: 90%;
-  padding: 20px 0;
+  padding: 10px;
 }
 .buttom {
   display: flex;
@@ -182,13 +207,13 @@ header .links a:hover {
 
 /* ---------------- section scroll products ---------------- */
 .scrollprod .logoframe {
-  height: 80%;
+  height: 450px;
   position: absolute;
   right: -220px;
   z-index: -1;
 }
 .newproducts .logoframe {
-  height: 80%;
+  height: 450px;
   position: absolute;
   left: -220px;
   z-index: -1;
