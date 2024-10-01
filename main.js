@@ -1,3 +1,4 @@
+
 // prelodar
 var lodar = document.getElementById("preloader");
 
@@ -44,7 +45,7 @@ if (screen.width < 600) {
   firsttop.forEach(function (top) {
     top.style.flexDirection = "column-reverse";
   });
-  
+
   topimgs.forEach(function (img) {
     img.style.display = "flex";
     img.style.width = "90%";
@@ -57,3 +58,6 @@ if (screen.width < 600) {
     image.style.padding = "0px 10px";
   });
 }
+
+// fich products
+

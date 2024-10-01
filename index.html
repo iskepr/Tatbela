@@ -80,16 +80,7 @@
       </div>
       <a href="mainbut" class="mainbut">المزيد</a>
     </div>
-    <div class="products">
-      <div class="product">
-        <img src="assets/imgs/pouring-honey-on-pancakes.png" alt="product tatbela">
-        <div class="detals">
-          <h2><span>بان كيك</span></h2>
-          <h4>بالفراولة و التوت</h4>
-          <h2><span>50</span> جنية</h2>
-        </div>
-      </div>
-    </div>
+    <div class="products"></div>
   </section>
   <br><br><br><br>
   <!-- new products -->
@@ -102,19 +93,9 @@
       </div>
       <a href="mainbut" class="mainbut">المزيد</a>
     </div>
-    <div class="products">
-      <div class="product">
-        <img src="assets/imgs/pouring-honey-on-pancakes.png" alt="product tatbela">
-        <div class="detals">
-          <h2><span>بان كيك</span></h2>
-          <h4>بالفراولة و التوت</h4>
-          <h2><span>50</span> جنية</h2>
-        </div>
-      </div>
-    </div>
+    <div class="products"></div>
   </section>
   <!-- footer -->
-  <hr width="100">
   <footer>
     <div class="prandname">
       <h1>Tatbela - تتبيلة </h1>
@@ -153,6 +134,38 @@
   <script src="js/jquery-3.7.1.min.js"></script>
   <script>
     AOS.init();
+
+    $.ajax({
+      url: "data/products.json",
+      dataType: "json",
+      caches: true,
+      success: function (data, status) {
+        $.each(data, function (index) {
+          $(".products")
+            .append(
+              `<div class="product" id="product-` + index  + `">
+                <img src="`+ data[index].الصورة + `" alt="` + data[index].الاسم + ` tatbela">
+                <div class="detals">
+                  <h2><span>` + data[index].الاسم + `</span></h2>
+                  <h4>` + data[index].وصف + `</h4>
+                  <h2><span>` + data[index].السعر + `</span> جنية</h2>
+                </div>
+              </div>`
+            );
+          // إضافة حدث الضغط
+          $("#product-" + index).click(function () {
+            // توجيه المستخدم إلى صفحة المنتج مع تمرير معرف المنتج في الرابط
+            window.location.href = "المنتج.html?المعرف=" + index;
+          });
+        });
+      },
+      error: function (xhr, textStatus, err) {
+        console.error(xhr);
+        console.error(err);
+        console.error(statusText);
+        console.error(xhr.statusText);
+      }
+    });
   </script>
 </body>
 

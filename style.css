@@ -29,6 +29,10 @@ body {
   color: var(--tx-color);
   overflow-x: hidden;
 }
+img {
+  max-width: 400px;
+  border-radius: 20px;
+}
 a {
   color: var(--tx-color);
   text-decoration: none;
@@ -102,15 +106,18 @@ header .links a:hover {
 .secone {
   padding: 20px 3%;
 }
+/* puppels */
 .secone .back img {
   z-index: -3;
 
   position: absolute;
   width: 100px;
+  animation: move-up6 2.5s ease-in infinite alternate-reverse;
 }
 .secone .back img:nth-child(1) {
   width: 108px;
   right: 1%;
+  animation-name: move-down1;
 }
 .secone .back img:nth-child(2) {
   width: 111px;
@@ -126,8 +133,25 @@ header .links a:hover {
   width: 60px;
   left: 1%;
   top: 37%;
+  animation-name: move-down2;
+}
+@keyframes move-up6 {
+  to {
+    transform: translateY(-20px);
+  }
 }
 
+@keyframes move-down2 {
+  to {
+    transform: translateY(30px);
+  }
+}
+@keyframes move-down1 {
+  to {
+    transform: translateY(20px);
+  }
+}
+/* top style for main sec */
 .secone .top {
   display: flex;
   justify-content: center;
@@ -206,6 +230,9 @@ header .links a:hover {
 }
 
 /* ---------------- section scroll products ---------------- */
+.logoframe {
+  scrollbar-width: none;
+}
 .scrollprod .logoframe {
   height: 450px;
   position: absolute;
@@ -217,6 +244,9 @@ header .links a:hover {
   position: absolute;
   left: -220px;
   z-index: -1;
+}
+.logoframe::-webkit-scrollbar {
+  display: none;
 }
 
 .scrollprod .top {
@@ -242,21 +272,35 @@ header .links a:hover {
 }
 /* products */
 .scrollprod .products {
+  display: flex;
   overflow-x: scroll;
-  margin: 10px 20px;
+  margin: 0px 20px;
+  margin-right: 0px;
   text-align: center;
+  border-radius: 10px;
+  scrollbar-width: none;
+}
+.scrollprod .products::-webkit-scrollbar {
+  display: none;
 }
 .scrollprod .product {
+  cursor: pointer;
   display: flex;
   padding: 15px;
   width: 230px;
+  margin: 0 10px;
   border-radius: 30px;
   flex-direction: column;
   background-color: var(--sac-color);
 }
 .scrollprod .product img {
   width: 200px;
+  height: 200px;
+  object-fit: cover;
   border-radius: 20px;
+}
+.scrollprod .product:hover {
+  transform: scale(0.95);
 }
 
 /* ----------------------------- footer --------------------------- */

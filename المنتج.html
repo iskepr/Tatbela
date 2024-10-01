@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tatbela - تتبيلة</title>
+    <link rel="shortcut icon" href="assets/imgs/tatbelalogo.svg" type="image/x-icon">
+
+    <meta name="description"
+        content="محمد سيد - مطور مواقع وتطبيقات محترف يقدم خدمات تطوير المواقع وتطبيقات الهواتف باستخدام فلاتر.">
+
+    <meta name="keywords"
+        content="محمد سيد , محمد سيد عبدالعليم , محمد سيد عبدالعليم محمود , سكيبر , محمد سكيبر , محمد سيد سكيبر , مصر , الزاوية الحمرء , محد سيد ازاوية الحمراء , Mohamed , Mohamed Sayed , Mohamed Skepr , Mohamed Sayed Skepr , Mohamed Sayed AbdElalem ,iskrpr , itskepr, qwsdxccc">
+    <meta name="author" content="Mohamed Sayed , mohamed sayed skepr, skepr , محمد سيد , سكيبر ,محمد سيد عبدالعليم">
+
+    <meta property="og:image" content="assets/imgs/Screenshot.png">
+    <meta property="twitter:image" content="assets/imgs/Screenshot.png">
+    <!-- style -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/aos.css" />
+</head>
+
+<body>
+    <div id="preloader">
+        <img src="assets/imgs/tatbelalogo.svg" alt="tatbela logo skepr"><br>
+        <a class="power" href="iskepr.web.app">تم برمجة الموقع بواسطة <span>@سكيبر</span></a>
+    </div>
+    <header>
+        <div class="logo">
+            <a href="index.html"><img src="assets/imgs/tatbelalogo.svg" alt="Tatbela logo"></a>
+        </div>
+        <div class="links">
+            <a href="about.html">عنا</a>
+            <a href="menu.html" class="active">المينيو</a>
+            <a href="index.html">الرئيسية</a>
+        </div>
+    </header>
+    
+    <div class="product">
+        <img id="product-image" src="" alt="صورة المنتج">
+        <h2 id="product-name"></h2>
+        <h4 id="product-description"></h4>
+        <h2><span id="product-price"></span> جنيه</h2>
+    </div>
+
+    <script src="main.js"></script>
+    <script src="js/aos.js"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+        // قراءة المعرف من الرابط
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('المعرف');
+
+        // تحميل بيانات المنتجات
+        fetch('data/products.json')
+            .then(response => response.json())
+            .then(data => {
+                // التحقق من وجود المنتج
+                if (data[productId]) {
+                    const product = data[productId];
+
+                    // تحديث محتويات الصفحة بالبيانات
+                    document.getElementById('product-image').src = product.الصورة;
+                    document.getElementById('product-name').textContent = product.الاسم;
+                    document.getElementById('product-description').textContent = product.وصف;
+                    document.getElementById('product-price').textContent = product.السعر;
+                } else {
+                    alert("المنتج غير موجود");
+                }
+            })
+            .catch(error => {
+                console.error("حدث خطأ في تحميل البيانات", error);
+            });
+    </script>
+</body>
+
+</html>
