@@ -1,10 +1,28 @@
 
 // prelodar
-var lodar = document.getElementById("preloader");
+const lodar = document.getElementById("preloader");
 
 window.addEventListener("load", function () {
   lodar.style.transform = "translateY(-100%)";
 });
+// header 
+const menulinks = document.querySelector("header .links");
+const menulogo = document.querySelector("header .logo");
+const menuchick = document.getElementById("lines");
+
+function toggleMenu() {
+  if (menuchick.checked) {
+    menulinks.style.transform = "translateX(0px)";
+    menulogo.style.opacity = 0;
+  } else {
+    menulinks.style.transform = "translateX(350px)";
+    menulogo.style.opacity = 1;
+  }
+}
+
+menuchick.addEventListener("change", toggleMenu);
+
+
 
 window.onscroll = function () {
   let value = window.scrollY;
