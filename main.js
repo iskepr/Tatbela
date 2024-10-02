@@ -19,7 +19,6 @@ function toggleMenu() {
     menulogo.style.opacity = 1;
   }
 }
-
 menuchick.addEventListener("change", toggleMenu);
 
 

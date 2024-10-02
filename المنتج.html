@@ -7,11 +7,10 @@
     <title>Tatbela - تتبيلة</title>
     <link rel="shortcut icon" href="assets/imgs/tatbelalogo.svg" type="image/x-icon">
 
-    <meta name="description"
-        content="محمد سيد - مطور مواقع وتطبيقات محترف يقدم خدمات تطوير المواقع وتطبيقات الهواتف باستخدام فلاتر.">
+    <meta name="description" content="مطعم تتبيلة ,ملوك الكريب في مصر👑🔥">
 
     <meta name="keywords"
-        content="محمد سيد , محمد سيد عبدالعليم , محمد سيد عبدالعليم محمود , سكيبر , محمد سكيبر , محمد سيد سكيبر , مصر , الزاوية الحمرء , محد سيد ازاوية الحمراء , Mohamed , Mohamed Sayed , Mohamed Skepr , Mohamed Sayed Skepr , Mohamed Sayed AbdElalem ,iskrpr , itskepr, qwsdxccc">
+        content="كريب سيد , مطعم تتبيلة , تتبيلة , سكيبر , محمد سكيبر , محمد سيد سكيبر , مصر , الزاوية الحمرء , تتبيلة الزاوية الحمراء , Tatbela , Mohamed Sayed , Mohamed Skepr , Mohamed Sayed Skepr , Mohamed Sayed AbdElalem ,iskrpr , itskepr, qwsdxccc">
     <meta name="author" content="Mohamed Sayed , mohamed sayed skepr, skepr , محمد سيد , سكيبر ,محمد سيد عبدالعليم">
 
     <meta property="og:image" content="assets/imgs/Screenshot.png">
@@ -35,31 +34,85 @@
             <a href="menu.html" class="active">المينيو</a>
             <a href="index.html">الرئيسية</a>
         </div>
+        <div class="menu">
+            <label class="lines" onclick="toggleMenu()">
+                <input type="checkbox" id="lines">
+                <svg class="svg" viewBox="0 0 32 32">
+                    <path class="line top-bottom"
+                        d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22">
+                    </path>
+                    <path class="line middle" d="M7 16 27 16"></path>
+                </svg>
+            </label>
+        </div>
     </header>
-
-    <div class="product">
-        <img id="product-image" src="" alt="صورة المنتج">
-        <h2 id="product-name"></h2>
-        <h4 id="product-description"></h4>
-        <h2><span id="product-price"></span> جنيه</h2>
+    <!-- product -->
+    <div class="oneproduct">
+        <div class="product">
+            <img id="product-image" src="" alt="صورة المنتج">
+            <div class="detals">
+                <h1 id="product-name"></h1>
+                <h2 id="product-description"></h2>
+                <h3 style="display: flex;justify-content: center;">
+                    <p id="product-ingredients"></p>&nbsp;<span>:المكونات</span>
+                </h3>
+                <h2><span id="product-price"></span> جنية</h2>
+                <button class="mainbut">اضف الي السلة</button>
+            </div>
+        </div>
     </div>
     <!-- most seel -->
     <section class="scrollprod" data-aos="fade-up">
         <img class="logoframe" src="assets/imgs/logoframe.svg" alt="">
         <div class="top">
             <div class="text">
-                <h2>أشهر الوجبات</h2>
+                <h2>وجبات مُشابهة</h2>
                 <h3>الاكثر مبيعاً</h3>
             </div>
             <a href="المينيو.html" class="mainbut">المزيد</a>
         </div>
         <div class="products"></div>
     </section>
+    <!-- footer -->
+    <footer>
+        <div class="prandname">
+            <h1>Tatbela - تتبيلة </h1>
+            <img src="assets/imgs/Restaurant.svg" alt="Restaurant text">
+        </div>
+        <div class="detal">
+            <div class="hotbut">
+                <h2><span>Hotline</span></h2>
+                <h3>
+                    <a href="tel:01100643437">01100643437</a>
+                    <span>:</span>
+                    <a href="tel:01091909186">01091909186</a>
+                </h3>
+            </div>
+            <div class="addres">
+                <p> <span>حدائق القبة:</span>
+                    123 شارع مصر والسودان بجوار البنك الأهلي
+                    <br>
+                    <span>الزاوية الحمراء:</span>
+                    شارع السوق التجاري امام مسجد الشيخ عبيد, أول الزاوية
+                </p>
+            </div>
+        </div>
+        <br>
+        <div class="links">
+            <a href="https://www.facebook.com/tatbelarestaurant"><img src="assets/imgs/facebook.png"
+                    alt="facebook tatbela"></a>
+            <a href="https://www.instagram.com/tatbela_restaurant"><img src="assets/imgs/instagram.png"
+                    alt="instagram tatbela"></a>
+        </div>
+        <a class="power" href="https://iskepr.web.app">تم برمجة الموقع بواسطة <span>@سكيبر</span>
+    </footer>
 
     <script src="main.js"></script>
     <script src="js/aos.js"></script>
     <script src="js/jquery-3.7.1.min.js"></script>
     <script>
+        AOS.init();
+
         // قراءة المعرف من الرابط
         const urlParams = new URLSearchParams(window.location.search);
         const productId = urlParams.get('المعرف');
@@ -76,6 +129,7 @@
                     document.getElementById('product-image').src = product.الصورة;
                     document.getElementById('product-name').textContent = product.الاسم;
                     document.getElementById('product-description').textContent = product.وصف;
+                    document.getElementById('product-ingredients').textContent = product.المكونات;
                     document.getElementById('product-price').textContent = product.السعر;
                 } else {
                     alert("المنتج غير موجود");
@@ -84,6 +138,38 @@
             .catch(error => {
                 console.error("حدث خطأ في تحميل البيانات", error);
             });
+
+        $.ajax({
+            url: "data/products.json",
+            dataType: "json",
+            caches: true,
+            success: function (data, status) {
+                $.each(data, function (index) {
+                    $(".products")
+                        .append(
+                            `<div class="product" id="product-` + index + `">
+            <img src="`+ data[index].الصورة + `" alt="` + data[index].الاسم + ` tatbela">
+            <div class="detals">
+                <h2><span>` + data[index].الاسم + `</span></h2>
+                <h4>` + data[index].وصف + `</h4>
+                <h2><span>` + data[index].السعر + `</span> جنية</h2>
+            </div>
+            </div>`
+                        );
+                    // إضافة حدث الضغط
+                    $("#product-" + index).click(function () {
+                        // توجيه المستخدم إلى صفحة المنتج مع تمرير معرف المنتج في الرابط
+                        window.location.href = "المنتج.html?المعرف=" + index;
+                    });
+                });
+            },
+            error: function (xhr, textStatus, err) {
+                console.error(xhr);
+                console.error(err);
+                console.error(statusText);
+                console.error(xhr.statusText);
+            }
+        });
     </script>
 </body>
 
