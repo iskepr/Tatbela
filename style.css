@@ -290,6 +290,7 @@ header .but:hover img {
 }
 .scrollprod {
   overflow-x: hidden;
+  position: relative;
 }
 .scrollprod .logoframe {
   height: 450px;
@@ -458,7 +459,7 @@ footer .links img {
   align-items: center;
 }
 
-.cart-container .mainbut{
+.cart-container .mainbut {
   font-size: 15px;
   padding: 5px 12px;
   margin: 5px;
@@ -482,8 +483,23 @@ footer .links img {
 
 #customer-info-form {
   display: none; /* إخفاء النموذج في البداية */
-  margin-top: 20px;
+  position: absolute;
+  top: 100px;
+  right: 35%;
+  left: 35%;
+}
+.model {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 500px;
   padding: 20px;
-  border: 1px solid #ccc;
-  
+  border-radius: 20px;
+  background-color: var(--bg-color);
+  border: 1px solid var(--sac-color);
+}
+.model #customer-info-form .mainbut {
+  margin: 7px auto;
+  padding: 5px 40px;
 }

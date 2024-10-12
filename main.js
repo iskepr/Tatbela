@@ -102,7 +102,7 @@ function displayCart() {
     total += parseFloat(product.price) * product.quantity; // حساب المجموع
 
     cartHTML += `
-                <a href="المنتج.html?المعرف=${product.id}">
+                <a href="product.html?id=${product.id}">
                 <div class="cart-item" data-index="${index}">
                     <div class="detals">
                         <h3>${product.name}</h3>
@@ -172,72 +172,81 @@ function removeItem(index) {
   displayCart(); // تحديث العرض
 }
 
-// إتمام الشراء
-document
-  .getElementById("checkout-button")
-  .addEventListener("click", function () {
-    document.getElementById("customer-info-form").style.display = "block"; // عرض النموذج
-  });
+document.getElementById("checkout-button").addEventListener("click", function () {
+  // التحقق من وجود بيانات العميل في localStorage
+  let name = localStorage.getItem("customerName");
+  let phone = localStorage.getItem("customerPhone");
+  let address = localStorage.getItem("customerAddress");
+
+  if (name && phone && address) {
+    // إذا كانت البيانات موجودة، إرسال الطلب مباشرة
+    sendOrder(name, phone, address);
+  } else {
+    // إذا لم تكن البيانات موجودة، عرض النموذج
+    document.getElementById("customer-info-form").style.display = "flex";
+  }
+});
 
 // إرسال بيانات العميل
-document
-  .getElementById("submit-customer-info")
-  .addEventListener("click", function () {
-    let name = document.getElementById("customer-name").value;
-    let phone = document.getElementById("customer-phone").value;
-    let address = document.getElementById("customer-address").value;
+document.getElementById("submit-customer-info").addEventListener("click", function () {
+  let name = document.getElementById("customer-name").value;
+  let phone = document.getElementById("customer-phone").value;
+  let address = document.getElementById("customer-address").value;
 
-    if (name && phone && address) {
-      // حفظ بيانات العميل في localStorage
-      localStorage.setItem("customerName", name);
-      localStorage.setItem("customerPhone", phone);
-      localStorage.setItem("customerAddress", address);
+  if (name && phone && address) {
+    // حفظ بيانات العميل في localStorage
+    localStorage.setItem("customerName", name);
+    localStorage.setItem("customerPhone", phone);
+    localStorage.setItem("customerAddress", address);
 
-      let cart = JSON.parse(localStorage.getItem("cart"));
-      let orderDetails = cart
-        .map(
-          (product) => `
-      <div style="
-        background-color: #111111;
-        color:  #ffffff;
-        margin: 10px 0; 
-        border-bottom: 1px solid #gray;">
-    <img style="border-radius: 16px;" width="100" src="https://iskepr.github.io/Tatbela/assets/imgs/${product.id}.png">
-    <a style="color: #fff; font-weight: bold;" href="https://iskepr.github.io/Tatbela/المنتج.html?المعرف=${product.id}">${product.name}</a>
-    (سعر: ${product.price} جنيه
-    ، كمية: ${product.quantity}) 
-    <br>`
-        )
-        .join("\n");
+    // إرسال الطلب بعد حفظ البيانات
+    sendOrder(name, phone, address);
+  } else {
+    alert("يرجى إدخال جميع المعلومات المطلوبة.");
+  }
+});
 
-      let orderEmail = `
-            <div style="background-color: #111111; color:  #ffffff; padding: 10px;border-radius: 20px;">
+// دالة لإرسال الطلب
+function sendOrder(name, phone, address) {
+  let cart = JSON.parse(localStorage.getItem("cart"));
+  let orderDetails = cart.map(product => `
+    <div style="
+      background-color: #111111;
+      color:  #ffffff;
+      margin: 10px 0; 
+      border-bottom: 1px solid #gray;">
+      <img style="border-radius: 16px;" width="100" src="https://iskepr.github.io/Tatbela/assets/imgs/${product.id}.png">
+      <a style="color: #fff; font-weight: bold;" href="https://iskepr.github.io/Tatbela/product.html?id=${product.id}">${product.name}</a>
+      (سعر: ${product.price} جنيه ، كمية: ${product.quantity}) 
+      <br>
+    </div>`).join("\n");
 
-                طلب جديد من: ${name}<br>
-                رقم الهاتف: ${phone}<br>
-                العنوان: ${address}<br>
-                <hr>
-                تفاصيل المنتجات:<br>
-                ${orderDetails}<br>
-                <a style="color: #fff; font-weight: bold;" class="power" href="https://iskepr.web.app">تم برمجة الموقع بواسطة <span style="color: #ecc243;">@سكيبر</span>
-                </div>
-            `;
+  let orderEmail = `
+    <div style="background-color: #111111; color:  #ffffff; padding: 10px;border-radius: 20px;">
+      طلب جديد من: ${name}<br>
+      رقم الهاتف: ${phone}<br>
+      العنوان: ${address}<br>
+      <hr>
+      تفاصيل المنتجات:<br>
+      ${orderDetails}<br>
+      <a style="color: #fff; font-weight: bold;" class="power" href="https://iskepr.web.app">تم برمجة الموقع بواسطة <span style="color: #ecc243;">@سكيبر</span>
+      </a>
+    </div>
+  `;
 
-      Email.send({
-        SecureToken: "d08980c7-8f23-4bc5-9d8f-37f618605096",
-        To: "skeprfuc@gmail.com",
-        From: "skeprfuc@gmail.com",
-        Subject: "طلب جديد من تتبيلة",
-        Body: orderEmail,
-      }).then((message) => {
-        alert("تم إرسال الطلب بنجاح!");
-        localStorage.removeItem("cart"); // مسح السلة بعد الإرسال
-        displayCart(); // تحديث العرض بعد الشراء
-      });
-    } else {
-      alert("يرجى إدخال جميع المعلومات المطلوبة.");
-    }
+  Email.send({
+    SecureToken: "d08980c7-8f23-4bc5-9d8f-37f618605096",
+    To: "skeprfuc@gmail.com",
+    From: "skeprfuc@gmail.com",
+    Subject: "طلب جديد من تتبيلة",
+    Body: orderEmail,
+  }).then((message) => {
+    alert("تم إرسال الطلب بنجاح!");
+    localStorage.removeItem("cart"); // مسح السلة بعد الإرسال
+    displayCart(); // تحديث العرض بعد الشراء
   });
+}
+
 
 // عرض السلة عند تحميل الصفحة
 displayCart();

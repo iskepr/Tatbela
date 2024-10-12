@@ -26,7 +26,7 @@
         <a class="power" href="iskepr.web.app">تم برمجة الموقع بواسطة <span>@سكيبر</span></a>
     </div>
     <header>
-        <a href="المينيو.html">
+        <a href="menu.html">
             <div class="but">
                 <div class="icon">
                     <img src="assets/imgs/menuicon.svg" alt="">
@@ -37,7 +37,7 @@
         <div class="logo">
             <a href="index.html"><img src="assets/imgs/tatbelalogo.svg" alt="Tatbela logo"></a>
         </div>
-        <a href="السلة.html">
+        <a href="cart.html">
             <div class="but">
                 <div class="icon">
                     <img src="assets/imgs/carticon.svg" alt="">
@@ -69,7 +69,7 @@
                 <h2>وجبات مُشابهة</h2>
                 <h3>الاكثر مبيعاً</h3>
             </div>
-            <a href="المينيو.html" class="mainbut">المزيد</a>
+            <a href="menu.html" class="mainbut">المزيد</a>
         </div>
         <div class="products"></div>
     </section>
@@ -111,7 +111,7 @@
 
         // قراءة المعرف من الرابط
         const urlParams = new URLSearchParams(window.location.search);
-        const productId = urlParams.get('المعرف');
+        const productId = urlParams.get('id');
 
         // تحميل بيانات المنتجات
         fetch('data/products.json')
@@ -146,7 +146,7 @@
                     $.each(sameTypeProducts, function (index, sameProduct) {
                         $(".products")
                             .append(
-                                `<a href="المنتج.html?المعرف=` + sameProduct.المعرف + `">
+                                `<a href="product.html?id=` + sameProduct.المعرف + `">
                             <div class="product" id="product-` + sameProduct.المعرف + `">
                                 <img src="` + sameProduct.الصورة + `" alt="` + sameProduct.الاسم + ` tatbela">
                                 <div class="detals">
