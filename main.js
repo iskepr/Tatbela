@@ -120,7 +120,7 @@ function displayCart() {
   });
 
   cartItemsContainer.innerHTML = cartHTML;
-  cartTotalContainer.textContent = `المجموع: ${total.toFixed(2)} جنيه`;
+  cartTotalContainer.textContent = `المجموع: ${total.toFixed(2)} جنية`;
 
   // إضافة الأحداث لعناصر التحكم في الكمية
   document.querySelectorAll(".increase-quantity").forEach((button) => {
@@ -172,44 +172,50 @@ function removeItem(index) {
   displayCart(); // تحديث العرض
 }
 
-document.getElementById("checkout-button").addEventListener("click", function () {
-  // التحقق من وجود بيانات العميل في localStorage
-  let name = localStorage.getItem("customerName");
-  let phone = localStorage.getItem("customerPhone");
-  let address = localStorage.getItem("customerAddress");
+document
+  .getElementById("checkout-button")
+  .addEventListener("click", function () {
+    // التحقق من وجود بيانات العميل في localStorage
+    let name = localStorage.getItem("customerName");
+    let phone = localStorage.getItem("customerPhone");
+    let address = localStorage.getItem("customerAddress");
 
-  if (name && phone && address) {
-    // إذا كانت البيانات موجودة، إرسال الطلب مباشرة
-    sendOrder(name, phone, address);
-  } else {
-    // إذا لم تكن البيانات موجودة، عرض النموذج
-    document.getElementById("customer-info-form").style.display = "flex";
-  }
-});
+    if (name && phone && address) {
+      // إذا كانت البيانات موجودة، إرسال الطلب مباشرة
+      sendOrder(name, phone, address);
+    } else {
+      // إذا لم تكن البيانات موجودة، عرض النموذج
+      document.getElementById("customer-info-form").style.display = "flex";
+    }
+  });
 
 // إرسال بيانات العميل
-document.getElementById("submit-customer-info").addEventListener("click", function () {
-  let name = document.getElementById("customer-name").value;
-  let phone = document.getElementById("customer-phone").value;
-  let address = document.getElementById("customer-address").value;
+document
+  .getElementById("submit-customer-info")
+  .addEventListener("click", function () {
+    let name = document.getElementById("customer-name").value;
+    let phone = document.getElementById("customer-phone").value;
+    let address = document.getElementById("customer-address").value;
 
-  if (name && phone && address) {
-    // حفظ بيانات العميل في localStorage
-    localStorage.setItem("customerName", name);
-    localStorage.setItem("customerPhone", phone);
-    localStorage.setItem("customerAddress", address);
+    if (name && phone && address) {
+      // حفظ بيانات العميل في localStorage
+      localStorage.setItem("customerName", name);
+      localStorage.setItem("customerPhone", phone);
+      localStorage.setItem("customerAddress", address);
 
-    // إرسال الطلب بعد حفظ البيانات
-    sendOrder(name, phone, address);
-  } else {
-    alert("يرجى إدخال جميع المعلومات المطلوبة.");
-  }
-});
+      // إرسال الطلب بعد حفظ البيانات
+      sendOrder(name, phone, address);
+    } else {
+      alert("يرجى إدخال جميع المعلومات المطلوبة.");
+    }
+  });
 
 // دالة لإرسال الطلب
 function sendOrder(name, phone, address) {
   let cart = JSON.parse(localStorage.getItem("cart"));
-  let orderDetails = cart.map(product => `
+  let orderDetails = cart
+    .map(
+      (product) => `
     <div style="
       background-color: #111111;
       color:  #ffffff;
@@ -219,7 +225,9 @@ function sendOrder(name, phone, address) {
       <a style="color: #fff; font-weight: bold;" href="https://iskepr.github.io/Tatbela/product.html?id=${product.id}">${product.name}</a>
       (سعر: ${product.price} جنيه ، كمية: ${product.quantity}) 
       <br>
-    </div>`).join("\n");
+    </div>`
+    )
+    .join("\n");
 
   let orderEmail = `
     <div style="background-color: #111111; color:  #ffffff; padding: 10px;border-radius: 20px;">
@@ -244,9 +252,9 @@ function sendOrder(name, phone, address) {
     alert("تم إرسال الطلب بنجاح!");
     localStorage.removeItem("cart"); // مسح السلة بعد الإرسال
     displayCart(); // تحديث العرض بعد الشراء
+    window.location.href = "index.html";
   });
 }
-
 
 // عرض السلة عند تحميل الصفحة
 displayCart();
