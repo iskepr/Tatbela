@@ -102,6 +102,7 @@ function displayCart() {
     total += parseFloat(product.price) * product.quantity; // حساب المجموع
 
     cartHTML += `
+                <a href="المنتج.html?المعرف=${product.id}">
                 <div class="cart-item" data-index="${index}">
                     <div class="detals">
                         <h3>${product.name}</h3>
@@ -114,7 +115,7 @@ function displayCart() {
                         <button class="remove-item mainbut">حذف المنتج</button>
                     </div>
                     <img src="${product.image}" alt="${product.name}">
-                </div>
+                </div></a>
             `;
   });
 
@@ -201,12 +202,8 @@ document
         color:  #ffffff;
         margin: 10px 0; 
         border-bottom: 1px solid #gray;">
-    <img style="border-radius: 16px;" width="100" src="https://iskepr.github.io/Tatbela/assets/imgs/${
-      product.id - 1
-    }.png">
-    <a style="color: #fff; font-weight: bold;" href="https://iskepr.github.io/Tatbela/المنتج.html?المعرف=${
-      product.id - 1
-    }">${product.name}</a>
+    <img style="border-radius: 16px;" width="100" src="https://iskepr.github.io/Tatbela/assets/imgs/${product.id}.png">
+    <a style="color: #fff; font-weight: bold;" href="https://iskepr.github.io/Tatbela/المنتج.html?المعرف=${product.id}">${product.name}</a>
     (سعر: ${product.price} جنيه
     ، كمية: ${product.quantity}) 
     <br>`
