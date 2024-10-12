@@ -230,7 +230,7 @@ header .but:hover img {
 }
 .secone .mainbut {
   position: absolute;
-  top: 300px;
+  top: 400px;
   width: 200px;
   z-index: 21;
 }
@@ -256,18 +256,31 @@ header .but:hover img {
 .secone .kings .b {
   z-index: 20;
 }
+
+.top .gradian {
+  position: absolute; /* تحديد الموضع بالنسبة للقسم */
+  width: 101%; /* تغطية العرض مع زيادة بسيطة */
+  top: 70px; /* موضع أعلى */
+  bottom: -20px; /* موضع أسفل */
+  left: 0px; /* محاذاة إلى اليسار */
+  background: linear-gradient(
+    0deg,
+    var(--bg-color) 10%,
+    #00000000 60%,
+    #00000000 100%
+  ); /* إضافة تدرج */
+  z-index: 15; /* تحديد ترتيب الطبقات */
+}
+
 @media (max-width: 500px) {
   .secone .kerep {
-    width: 150%;
+    width: 160%;
   }
   .secone .kings img {
     width: 100%;
   }
-  .secone .kings .b {
-    opacity: 0;
-  }
-  .secone .kings .s {
-    z-index: 20;
+  .secone .mainbut {
+    top: 300px;
   }
 }
 
@@ -293,7 +306,9 @@ header .but:hover img {
 .logoframe::-webkit-scrollbar {
   display: none;
 }
-
+.bar {
+  overflow-x: hidden;
+}
 .scrollprod .top {
   display: flex;
   justify-content: space-between;
@@ -377,6 +392,7 @@ footer .links img {
   width: 100%;
   max-width: 350px;
   margin-bottom: -20px;
+  border-radius: 20px;
 }
 .oneproduct .product .detals {
   padding: 50px;
@@ -397,4 +413,77 @@ footer .links img {
   .oneproduct .product img {
     width: 80%;
   }
+}
+
+/* ------------------------------------- cart style ------------------------------------- */
+.cart-container {
+  width: 80%;
+  margin: 0 auto;
+  text-align: right;
+  margin-bottom: 50px;
+}
+
+.cart-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  text-align: right;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--sac-color);
+  padding-bottom: 20px;
+}
+
+.cart-item img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-left: 20px;
+  border-radius: 20px;
+}
+
+.cart-item h3 {
+  margin: 0;
+}
+
+.cart-item p {
+  margin: 5px 0;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+}
+
+.cart-container .mainbut{
+  font-size: 15px;
+  padding: 5px 12px;
+  margin: 5px;
+}
+
+.cart-total {
+  font-size: 1.5rem;
+  margin-top: 20px;
+}
+
+#checkout-button {
+  font-size: 20px;
+  padding: 10px 70px;
+  display: flex;
+  margin: 10px auto;
+}
+
+.checkout-button:hover {
+  background-color: #45a049;
+}
+
+#customer-info-form {
+  display: none; /* إخفاء النموذج في البداية */
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  
 }

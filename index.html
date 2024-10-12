@@ -63,19 +63,23 @@
       <a href="المينيو.html" class="mainbut">اطلب الان</a>
 
       <img class="kerep" src="assets/imgs/kereb.png" alt="">
-    </div>  
+
+      <div class="gradian"></div>
+    </div>
   </section>
   <!-- most seel -->
   <section class="scrollprod" data-aos="fade-up">
-    <img class="logoframe" src="assets/imgs/logoframe.svg" alt="">
-    <div class="top">
-      <div class="text">
-        <h2>أشهر الوجبات</h2>
-        <h3>الاكثر مبيعاً</h3>
+    <div class="bar">
+      <img class="logoframe" src="assets/imgs/logoframe.svg" alt="">
+      <div class="top">
+        <div class="text">
+          <h2>أشهر الوجبات</h2>
+          <h3>الاكثر مبيعاً</h3>
+        </div>
+        <a href="المينيو.html" class="mainbut">المزيد</a>
       </div>
-      <a href="المينيو.html" class="mainbut">المزيد</a>
+      <div class="products" id="topsall"></div>
     </div>
-    <div class="products"></div>
   </section>
   <br><br><br><br>
   <!-- new products -->
@@ -88,7 +92,7 @@
       </div>
       <a href="المينيو.html" class="mainbut">المزيد</a>
     </div>
-    <div class="products"></div>
+    <div class="products" id="lasts"></div>
   </section>
   <!-- footer -->
   <footer>
@@ -131,32 +135,72 @@
       dataType: "json",
       caches: true,
       success: function (data, status) {
+        // فرز المنتجات بناءً على عدد المبيعات
+        data.sort(function (a, b) {
+          return b.المبيعات - a.المبيعات; // ترتيب تنازلي بناءً على عدد المبيعات
+        });
+        // تحدييد عدد المنتجات
+        data = data.slice(0, 10);
+
+        // عرض المنتجات بعد الفرز
         $.each(data, function (index) {
-          $(".products")
+          $("#topsall")
             .append(
-              `<div class="product" id="product-` + index + `">
-            <img src="`+ data[index].الصورة + `" alt="` + data[index].الاسم + ` tatbela">
+              `<a href="` + "المنتج.html?المعرف=" + data[index].المعرف + `"><div class="product" id="product-` + index + `">
+            <img src="` + data[index].الصورة + `" alt="` + data[index].الاسم + `">
             <div class="detals">
               <h2><span>` + data[index].الاسم + `</span></h2>
               <h4>` + data[index].وصف + `</h4>
               <h2><span>` + data[index].السعر + `</span> جنية</h2>
             </div>
-          </div>`
+          </div></a>`
             );
-          // إضافة حدث الضغط
-          $("#product-" + index).click(function () {
-            // توجيه المستخدم إلى صفحة المنتج مع تمرير معرف المنتج في الرابط
-            window.location.href = "المنتج.html?المعرف=" + index;
-          });
         });
       },
       error: function (xhr, textStatus, err) {
         console.error(xhr);
         console.error(err);
-        console.error(statusText);
+        console.error(textStatus);
         console.error(xhr.statusText);
       }
     });
+    // short by last add
+    $.ajax({
+      url: "data/products.json",
+      dataType: "json",
+      caches: true,
+      success: function (data, status) {
+        // فرز المنتجات بناءً على عدد المبيعات
+        data.sort(function (a, b) {
+          return b.المعرف - a.المعرف; // ترتيب تنازلي بناءً على عدد المبيعات
+        });
+
+        // تحدييد عدد المنتجات
+        data = data.slice(0, 10);
+
+        // عرض المنتجات بعد الفرز
+        $.each(data, function (index) {
+          $("#lasts")
+            .append(
+              `<a href="` + "المنتج.html?المعرف=" + data[index].المعرف + `"><div class="product" id="product-` + index + `">
+            <img src="` + data[index].الصورة + `" alt="` + data[index].الاسم + `">
+            <div class="detals">
+              <h2><span>` + data[index].الاسم + `</span></h2>
+              <h4>` + data[index].وصف + `</h4>
+              <h2><span>` + data[index].السعر + `</span> جنية</h2>
+            </div>
+          </div></a>`
+            );
+        });
+      },
+      error: function (xhr, textStatus, err) {
+        console.error(xhr);
+        console.error(err);
+        console.error(textStatus);
+        console.error(xhr.statusText);
+      }
+    });
+
   </script>
 </body>
 

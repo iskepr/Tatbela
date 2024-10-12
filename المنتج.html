@@ -26,25 +26,25 @@
         <a class="power" href="iskepr.web.app">تم برمجة الموقع بواسطة <span>@سكيبر</span></a>
     </div>
     <header>
+        <a href="المينيو.html">
+            <div class="but">
+                <div class="icon">
+                    <img src="assets/imgs/menuicon.svg" alt="">
+                </div>
+                <h3>المينيو</h3>
+            </div>
+        </a>
         <div class="logo">
             <a href="index.html"><img src="assets/imgs/tatbelalogo.svg" alt="Tatbela logo"></a>
         </div>
-        <div class="links">
-            <a href="about.html">عنا</a>
-            <a href="menu.html" class="active">المينيو</a>
-            <a href="index.html">الرئيسية</a>
-        </div>
-        <div class="menu">
-            <label class="lines" onclick="toggleMenu()">
-                <input type="checkbox" id="lines">
-                <svg class="svg" viewBox="0 0 32 32">
-                    <path class="line top-bottom"
-                        d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22">
-                    </path>
-                    <path class="line middle" d="M7 16 27 16"></path>
-                </svg>
-            </label>
-        </div>
+        <a href="السلة.html">
+            <div class="but">
+                <div class="icon">
+                    <img src="assets/imgs/carticon.svg" alt="">
+                </div>
+                <h3>السلة</h3>
+            </div>
+        </a>
     </header>
     <!-- product -->
     <div class="oneproduct">
@@ -57,7 +57,7 @@
                     <p id="product-ingredients"></p>&nbsp;<span>:المكونات</span>
                 </h3>
                 <h2><span id="product-price"></span> جنية</h2>
-                <button class="mainbut">اضف الي السلة</button>
+                <button class="mainbut" onclick="addtocart()">اضف الي السلة</button>
             </div>
         </div>
     </div>
@@ -75,10 +75,6 @@
     </section>
     <!-- footer -->
     <footer>
-        <div class="prandname">
-            <h1>Tatbela - تتبيلة </h1>
-            <img src="assets/imgs/Restaurant.svg" alt="Restaurant text">
-        </div>
         <div class="detal">
             <div class="hotbut">
                 <h2><span>Hotline</span></h2>
@@ -122,8 +118,8 @@
             .then(response => response.json())
             .then(data => {
                 // التحقق من وجود المنتج
-                if (data[productId]) {
-                    const product = data[productId];
+                if (data[productId - 1]) {
+                    const product = data[productId - 1];
 
                     // تحديث محتويات الصفحة بالبيانات
                     document.getElementById('product-image').src = product.الصورة;
@@ -131,6 +127,37 @@
                     document.getElementById('product-description').textContent = product.وصف;
                     document.getElementById('product-ingredients').textContent = product.المكونات;
                     document.getElementById('product-price').textContent = product.السعر;
+
+                    // احصل على نوع المنتج
+                    const productType = product.النوع;
+
+                    // تصفية المنتجات بناءً على النوع
+                    const sameTypeProducts = data.filter(item => item.النوع === productType && item.المعرف != product.المعرف);
+
+
+                    // تأكد من أن العنصر products موجود
+                    if (sameTypeProducts.length === 0) {
+                        let scroll = document.querySelector(".scrollprod");
+                        scroll.style.display = "none";
+                        return;
+                    }
+
+                    // عرض المنتجات التي من نفس النوع
+                    $.each(sameTypeProducts, function (index, sameProduct) {
+                        $(".products")
+                            .append(
+                                `<a href="المنتج.html?المعرف=` + sameProduct.المعرف + `">
+                            <div class="product" id="product-` + sameProduct.المعرف + `">
+                                <img src="` + sameProduct.الصورة + `" alt="` + sameProduct.الاسم + ` tatbela">
+                                <div class="detals">
+                                    <h2><span>` + sameProduct.الاسم + `</span></h2>
+                                    <h4>` + sameProduct.وصف + `</h4>
+                                    <h2><span>` + sameProduct.السعر + `</span> جنية</h2>
+                                </div>
+                            </div>
+                        </a>`
+                            );
+                    });
                 } else {
                     alert("المنتج غير موجود");
                 }
@@ -139,37 +166,44 @@
                 console.error("حدث خطأ في تحميل البيانات", error);
             });
 
-        $.ajax({
-            url: "data/products.json",
-            dataType: "json",
-            caches: true,
-            success: function (data, status) {
-                $.each(data, function (index) {
-                    $(".products")
-                        .append(
-                            `<div class="product" id="product-` + index + `">
-            <img src="`+ data[index].الصورة + `" alt="` + data[index].الاسم + ` tatbela">
-            <div class="detals">
-                <h2><span>` + data[index].الاسم + `</span></h2>
-                <h4>` + data[index].وصف + `</h4>
-                <h2><span>` + data[index].السعر + `</span> جنية</h2>
-            </div>
-            </div>`
-                        );
-                    // إضافة حدث الضغط
-                    $("#product-" + index).click(function () {
-                        // توجيه المستخدم إلى صفحة المنتج مع تمرير معرف المنتج في الرابط
-                        window.location.href = "المنتج.html?المعرف=" + index;
-                    });
-                });
-            },
-            error: function (xhr, textStatus, err) {
-                console.error(xhr);
-                console.error(err);
-                console.error(statusText);
-                console.error(xhr.statusText);
+        // عند الضغط على زر "أضف إلى السلة"
+        function addtocart() {
+
+            // استرجاع بيانات المنتج من الصفحة
+            const productId = urlParams.get('المعرف');
+            const productName = document.getElementById('product-name').textContent;
+            const productPrice = document.getElementById('product-price').textContent;
+            const productImage = document.getElementById('product-image').src;
+
+            // هيكل المنتج
+            const product = {
+                id: productId,
+                name: productName,
+                price: productPrice,
+                image: productImage,
+                quantity: 1 // يمكن تغيير الكمية بناءً على متطلباتك
+            };
+
+            // استرجاع السلة الحالية من localStorage
+            let cart = localStorage.getItem('cart');
+            cart = cart ? JSON.parse(cart) : [];
+
+            // البحث عن المنتج في السلة بناءً على id
+            const existingProductIndex = cart.findIndex(item => item.id === productId);
+
+            if (existingProductIndex !== -1) {
+                // إذا كان المنتج موجود بالفعل، زيادة الكمية
+                cart[existingProductIndex].quantity += 1;
+            } else {
+                // إذا لم يكن موجود، أضفه للسلة
+                cart.push(product);
             }
-        });
+
+            // تحديث السلة في localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // alert('تمت إضافة المنتج إلى السلة!');
+        }
     </script>
 </body>
 
