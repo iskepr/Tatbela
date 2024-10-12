@@ -26,25 +26,25 @@
     <a class="power" href="https://iskepr.web.app">تم برمجة الموقع بواسطة <span>@سكيبر</span></a>
   </div>
   <header>
+    <a href="المينيو.html">
+      <div class="but">
+        <div class="icon">
+          <img src="assets/imgs/menuicon.svg" alt="">
+        </div>
+        <h3>المينيو</h3>
+      </div>
+    </a>
     <div class="logo">
       <a href="index.html"><img src="assets/imgs/tatbelalogo.svg" alt="Tatbela logo"></a>
     </div>
-    <div class="links">
-      <a href="index.html" class="active">الرئيسية</a>
-      <a href="المينيو.html">المينيو</a>
-      <a href="عنا.html">عنا</a>
-    </div>
-    <div class="menu">
-      <label class="lines" onclick="toggleMenu()">
-        <input type="checkbox" id="lines">
-        <svg class="svg" viewBox="0 0 32 32">
-          <path class="line top-bottom"
-            d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22">
-          </path>
-          <path class="line middle" d="M7 16 27 16"></path>
-        </svg>
-      </label>
-    </div>
+    <a href="السلة.html">
+      <div class="but">
+        <div class="icon">
+          <img src="assets/imgs/carticon.svg" alt="">
+        </div>
+        <h3>السلة</h3>
+      </div>
+    </a>
   </header>
   <!-- first -->
   <section class="secone" data-aos="fade-up" data-aos-delay="100">
@@ -55,30 +55,15 @@
       <img src="assets/imgs/cut4.svg" alt="">
     </div>
     <div class="top">
-      <div class="imgs">
-        <!-- <img src="assets/imgs/juicy-cheeseburger.png" alt="burger Tatbela">
-        <img src="assets/imgs/pizza-salami.png" alt="pizza-salami Tatbela">
-        <img src="assets/imgs/burger.png" alt="burger Tatbela"> -->
+      <img class="prandname" src="assets/imgs/name.svg" alt="">
+      <div class="kings">
+        <img class="s" src="assets/imgs/kings.png" alt="">
+        <img class="b" src="assets/imgs/kingsborder.svg" alt="">
       </div>
-      <div class="texts">
-        <div class="prandname">
-          <h1>Tatbela - تتبيلة </h1>
-          <img src="assets/imgs/Restaurant.svg" alt="Restaurant text">
-        </div>
-        <h2>ملوك الكريب في مصر👑🔥</h2>
-        <div class="hotline">
-          <div class="hotbut">
-            <h1>Hotline</h1>
-            <h2><a href="tel:01100643437">01100643437</a></h2>
-            <h2><a href="tel:01091909186">01091909186</a></h2>
-            <img src="assets/imgs/fire.webp" alt="fire skepr">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="buttom">
       <a href="المينيو.html" class="mainbut">اطلب الان</a>
-    </div>
+
+      <img class="kerep" src="assets/imgs/kereb.png" alt="">
+    </div>  
   </section>
   <!-- most seel -->
   <section class="scrollprod" data-aos="fade-up">
@@ -107,10 +92,6 @@
   </section>
   <!-- footer -->
   <footer>
-    <div class="prandname">
-      <h1>Tatbela - تتبيلة </h1>
-      <img src="assets/imgs/Restaurant.svg" alt="Restaurant text">
-    </div>
     <div class="detal">
       <div class="hotbut">
         <h2><span>Hotline</span></h2>
@@ -146,14 +127,14 @@
     AOS.init();
 
     $.ajax({
-  url: "data/products.json",
-  dataType: "json",
-  caches: true,
-  success: function (data, status) {
-    $.each(data, function (index) {
-      $(".products")
-        .append(
-          `<div class="product" id="product-` + index + `">
+      url: "data/products.json",
+      dataType: "json",
+      caches: true,
+      success: function (data, status) {
+        $.each(data, function (index) {
+          $(".products")
+            .append(
+              `<div class="product" id="product-` + index + `">
             <img src="`+ data[index].الصورة + `" alt="` + data[index].الاسم + ` tatbela">
             <div class="detals">
               <h2><span>` + data[index].الاسم + `</span></h2>
@@ -161,21 +142,21 @@
               <h2><span>` + data[index].السعر + `</span> جنية</h2>
             </div>
           </div>`
-        );
-      // إضافة حدث الضغط
-      $("#product-" + index).click(function () {
-        // توجيه المستخدم إلى صفحة المنتج مع تمرير معرف المنتج في الرابط
-        window.location.href = "المنتج.html?المعرف=" + index;
-      });
+            );
+          // إضافة حدث الضغط
+          $("#product-" + index).click(function () {
+            // توجيه المستخدم إلى صفحة المنتج مع تمرير معرف المنتج في الرابط
+            window.location.href = "المنتج.html?المعرف=" + index;
+          });
+        });
+      },
+      error: function (xhr, textStatus, err) {
+        console.error(xhr);
+        console.error(err);
+        console.error(statusText);
+        console.error(xhr.statusText);
+      }
     });
-  },
-  error: function (xhr, textStatus, err) {
-    console.error(xhr);
-    console.error(err);
-    console.error(statusText);
-    console.error(xhr.statusText);
-  }
-});
   </script>
 </body>
 

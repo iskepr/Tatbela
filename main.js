@@ -1,80 +1,79 @@
-
-// prelodar
-const lodar = document.getElementById("preloader");
+// Preloader
+const preloader = document.getElementById("preloader");
 
 window.addEventListener("load", function () {
-  lodar.style.transform = "translateY(-100%)";
+  preloader.style.transform = "translateY(-100%)";
 });
-// header 
-const menulinks = document.querySelector("header .links");
-const menulogo = document.querySelector("header .logo");
-const menuchick = document.getElementById("lines");
+
+// Header
+const menuLinks = document.querySelector("header .links");
+const menuLogo = document.querySelector("header .logo");
+const menuToggle = document.getElementById("lines");
 
 function toggleMenu() {
-  if (menuchick.checked) {
-    menulinks.style.transform = "translateX(0px)";
-    menulogo.style.opacity = 0;
+  if (menuToggle.checked) {
+    menuLinks.style.transform = "translateX(0)";
+    menuLogo.style.opacity = 0;
   } else {
-    menulinks.style.transform = "translateX(350px)";
-    menulogo.style.opacity = 1;
+    menuLinks.style.transform = "translateX(350px)";
+    menuLogo.style.opacity = 1;
   }
 }
-menuchick.addEventListener("change", toggleMenu);
 
-
-
+// Scroll effect
 window.onscroll = function () {
-  let value = window.scrollY;
-  let logoframes = document.querySelectorAll(".logoframe");
-  let scrollimgs = document.querySelectorAll(".scrlimg");
+  const scrollValue = window.scrollY;
+  const logoFrames = document.querySelectorAll(".logoframe");
+  const scrollkerep = document.querySelectorAll(".kerep");
+  const scrollprandname = document.querySelectorAll(".prandname");
 
-  if (screen.width > 600) {
-    scrollimgs.forEach(function (scrollimg) {
-      scrollimg.style.transform = "translateY(" + -value / 0.8 + "px)";
-    });
-  } else {
-    scrollimgs.forEach(function (scrollimg) {
-      scrollimg.style.transform = "translateX(" + -value / 0.5 + "px)";
-    });
-  }
-  logoframes.forEach(function (logoframe) {
-    logoframe.style.transform = "rotate(" + value / 2.5 + "deg)";
+  scrollkerep.forEach(function (kerep) {
+    kerep.style.transform = `translateY(${-scrollValue * 0.7}px)`;
+  });
+  scrollprandname.forEach(function (prandname) {
+    prandname.style.transform = `translateY(${scrollValue * 0.7}px)`;
+  });
+
+  logoFrames.forEach(function (frame) {
+    frame.style.transform = `rotate(${scrollValue / 2.5}deg)`;
   });
 };
-let topimgs = document.querySelectorAll(".top .imgs");
-let firsttop = document.querySelectorAll(".secone .top");
+
+// Prepare images
+const topImagesContainer = document.querySelector(".top .imgs");
+const firstTopElements = document.querySelectorAll(".secone .top");
 
 const images = [
   "assets/imgs/juicy-cheeseburger.png",
   "assets/imgs/burger.png",
   "assets/imgs/pizza-salami.png",
 ];
-let imgs = "";
+
+let imgsHTML = "";
 for (let j = 0; j < 5; j++) {
-  // استخدم متغير j للحلقة الخارجية
-  for (let i = 0; i < images.length; i++) {
-    imgs += "<img class='scrlimg' src='" + images[i] + "'>";
-  }
+  images.forEach(function (image) {
+    imgsHTML += `<img class='scrlimg' src='${image}'>`;
+  });
 }
-document.querySelector(".top .imgs").innerHTML = imgs;
-if (screen.width < 600) {
-  let scrollimgs = document.querySelectorAll(".scrlimg");
-  firsttop.forEach(function (top) {
+topImagesContainer.innerHTML = imgsHTML;
+
+if (window.innerWidth < 600) {
+  const scrollImages = document.querySelectorAll(".scrlimg");
+  firstTopElements.forEach(function (top) {
     top.style.flexDirection = "column-reverse";
   });
 
-  topimgs.forEach(function (img) {
+  topImagesContainer.querySelectorAll("img").forEach(function (img) {
     img.style.display = "flex";
     img.style.width = "90%";
     img.style.height = "300px";
     img.style.overflowX = "hidden";
   });
 
-  scrollimgs.forEach(function (image) {
+  scrollImages.forEach(function (image) {
     image.style.width = "300px";
-    image.style.padding = "0px 10px";
+    image.style.padding = "0 10px";
   });
 }
 
-// fich products
-
+// Fetch products
