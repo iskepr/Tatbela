@@ -43,44 +43,7 @@ window.onscroll = function () {
   });
 };
 
-// Prepare images
-const topImagesContainer = document.querySelector(".top .imgs");
-const firstTopElements = document.querySelectorAll(".secone .top");
-
-const images = [
-  "assets/imgs/juicy-cheeseburger.png",
-  "assets/imgs/burger.png",
-  "assets/imgs/pizza-salami.png",
-];
-
-let imgsHTML = "";
-for (let j = 0; j < 5; j++) {
-  images.forEach(function (image) {
-    imgsHTML += `<img class='scrlimg' src='${image}'>`;
-  });
-}
-
-if (window.innerWidth < 600) {
-  const scrollImages = document.querySelectorAll(".scrlimg");
-  firstTopElements.forEach(function (top) {
-    top.style.flexDirection = "column-reverse";
-  });
-
-  topImagesContainer.querySelectorAll("img").forEach(function (img) {
-    img.style.display = "flex";
-    img.style.width = "90%";
-    img.style.height = "300px";
-    img.style.overflowX = "hidden";
-  });
-
-  scrollImages.forEach(function (image) {
-    image.style.width = "300px";
-    image.style.padding = "0 10px";
-  });
-}
-
 // cart products
-
 // استرجاع السلة من localStorage
 function displayCart() {
   let cart = localStorage.getItem("cart");
@@ -89,8 +52,13 @@ function displayCart() {
   let cartItemsContainer = document.getElementById("cart-items");
   let cartTotalContainer = document.getElementById("cart-total");
 
+  let cartball = document.getElementById("cartball");
+  cartball.innerHTML = cart.length;
+
   if (cart.length === 0) {
-    cartItemsContainer.innerHTML = "<h1>السلة فارغة.</h1>";
+    cartball.style.display = "none";
+    document.getElementById("checkout-button").style.display = "none";
+    cartItemsContainer.innerHTML = "<h1>فارغة</h1>";
     cartTotalContainer.textContent = "";
     return;
   }
@@ -118,10 +86,10 @@ function displayCart() {
                 </div></a>
             `;
   });
-
-  cartItemsContainer.innerHTML = cartHTML;
-  cartTotalContainer.textContent = `المجموع: ${total.toFixed(2)} جنية`;
-
+  if (cartItemsContainer) {
+    cartItemsContainer.innerHTML = cartHTML;
+    cartTotalContainer.textContent = `المجموع: ${total.toFixed(2)} جنية`;
+  }
   // إضافة الأحداث لعناصر التحكم في الكمية
   document.querySelectorAll(".increase-quantity").forEach((button) => {
     button.addEventListener("click", function () {
@@ -172,44 +140,46 @@ function removeItem(index) {
   displayCart(); // تحديث العرض
 }
 
-document
-  .getElementById("checkout-button")
-  .addEventListener("click", function () {
-    // التحقق من وجود بيانات العميل في localStorage
-    let name = localStorage.getItem("customerName");
-    let phone = localStorage.getItem("customerPhone");
-    let address = localStorage.getItem("customerAddress");
+if (document.getElementById("checkout-button")) {
+  document
+    .getElementById("checkout-button")
+    .addEventListener("click", function () {
+      // التحقق من وجود بيانات العميل في localStorage
+      let name = localStorage.getItem("customerName");
+      let phone = localStorage.getItem("customerPhone");
+      let address = localStorage.getItem("customerAddress");
 
-    if (name && phone && address) {
-      // إذا كانت البيانات موجودة، إرسال الطلب مباشرة
-      sendOrder(name, phone, address);
-    } else {
-      // إذا لم تكن البيانات موجودة، عرض النموذج
-      document.getElementById("customer-info-form").style.display = "flex";
-    }
-  });
-
+      if (name && phone && address) {
+        // إذا كانت البيانات موجودة، إرسال الطلب مباشرة
+        sendOrder(name, phone, address);
+      } else {
+        // إذا لم تكن البيانات موجودة، عرض النموذج
+        document.getElementById("customer-info-form").style.display = "flex";
+      }
+    });
+}
 // إرسال بيانات العميل
-document
-  .getElementById("submit-customer-info")
-  .addEventListener("click", function () {
-    let name = document.getElementById("customer-name").value;
-    let phone = document.getElementById("customer-phone").value;
-    let address = document.getElementById("customer-address").value;
+if (document.getElementById("submit-customer-info")) {
+  document
+    .getElementById("submit-customer-info")
+    .addEventListener("click", function () {
+      let name = document.getElementById("customer-name").value;
+      let phone = document.getElementById("customer-phone").value;
+      let address = document.getElementById("customer-address").value;
 
-    if (name && phone && address) {
-      // حفظ بيانات العميل في localStorage
-      localStorage.setItem("customerName", name);
-      localStorage.setItem("customerPhone", phone);
-      localStorage.setItem("customerAddress", address);
+      if (name && phone && address) {
+        // حفظ بيانات العميل في localStorage
+        localStorage.setItem("customerName", name);
+        localStorage.setItem("customerPhone", phone);
+        localStorage.setItem("customerAddress", address);
 
-      // إرسال الطلب بعد حفظ البيانات
-      sendOrder(name, phone, address);
-    } else {
-      alert("يرجى إدخال جميع المعلومات المطلوبة.");
-    }
-  });
-
+        // إرسال الطلب بعد حفظ البيانات
+        sendOrder(name, phone, address);
+      } else {
+        alert("يرجى إدخال جميع المعلومات المطلوبة.");
+      }
+    });
+}
 // دالة لإرسال الطلب
 function sendOrder(name, phone, address) {
   let cart = JSON.parse(localStorage.getItem("cart"));
@@ -249,7 +219,11 @@ function sendOrder(name, phone, address) {
     Subject: "طلب جديد من تتبيلة",
     Body: orderEmail,
   }).then((message) => {
-    alert("تم إرسال الطلب بنجاح!");
+    document.querySelector(".alert").innerHTML = "تم إرسال الطلب بنجاح!";
+    document.querySelector(".alert").style.transform = "translate(0px)";
+    setTimeout(function () {
+      document.querySelector(".alert").style.transform = "translate(400px)";
+    }, 3000);
     localStorage.removeItem("cart"); // مسح السلة بعد الإرسال
     displayCart(); // تحديث العرض بعد الشراء
     window.location.href = "index.html";

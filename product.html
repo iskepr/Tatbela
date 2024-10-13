@@ -25,6 +25,7 @@
         <img src="assets/imgs/tatbelalogo.svg" alt="tatbela logo skepr"><br>
         <a class="power" href="iskepr.web.app">تم برمجة الموقع بواسطة <span>@سكيبر</span></a>
     </div>
+    <img class="pflag" src="assets/imgs/palestine.webp" alt="free palestine for ever tatbela Restaurant">
     <header>
         <a href="menu.html">
             <div class="but">
@@ -40,12 +41,15 @@
         <a href="cart.html">
             <div class="but">
                 <div class="icon">
+                    <span id="cartball"></span>
                     <img src="assets/imgs/carticon.svg" alt="">
                 </div>
                 <h3>السلة</h3>
             </div>
         </a>
     </header>
+    <!-- alart -->
+    <div class="alert"></div>
     <!-- product -->
     <div class="oneproduct">
         <div class="product">
@@ -117,10 +121,11 @@
         fetch('data/products.json')
             .then(response => response.json())
             .then(data => {
-                // التحقق من وجود المنتج
-                if (data[productId - 1]) {
-                    const product = data[productId - 1];
+                // البحث عن المنتج
+                const product = data.find(item => item.المعرف == productId);
 
+                // التحقق من وجود المنتج
+                if (product) {
                     // تحديث محتويات الصفحة بالبيانات
                     document.getElementById('product-image').src = product.الصورة;
                     document.getElementById('product-name').textContent = product.الاسم;
@@ -133,7 +138,6 @@
 
                     // تصفية المنتجات بناءً على النوع
                     const sameTypeProducts = data.filter(item => item.النوع === productType && item.المعرف != product.المعرف);
-
 
                     // تأكد من أن العنصر products موجود
                     if (sameTypeProducts.length === 0) {
@@ -165,6 +169,7 @@
             .catch(error => {
                 console.error("حدث خطأ في تحميل البيانات", error);
             });
+
 
         // عند الضغط على زر "أضف إلى السلة"
         function addtocart() {
@@ -202,7 +207,11 @@
             // تحديث السلة في localStorage
             localStorage.setItem('cart', JSON.stringify(cart));
 
-            // alert('تمت إضافة المنتج إلى السلة!');
+            document.querySelector('.alert').innerHTML = 'تمت إضافة المنتج إلى السلة!';
+            document.querySelector('.alert').style.transform = 'translate(0px)';
+            setTimeout(function () {
+                document.querySelector('.alert').style.transform = 'translate(400px)';
+            }, 3000);
         }
     </script>
 </body>

@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="ar">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -5,7 +8,6 @@
   <link rel="shortcut icon" href="assets/imgs/tatbelalogo.svg" type="image/x-icon">
 
   <meta name="description" content="مطعم تتبيلة ,ملوك الكريب في مصر👑🔥">
-
   <meta name="keywords"
     content="كريب سيد , مطعم تتبيلة , تتبيلة , سكيبر , محمد سكيبر , محمد سيد سكيبر , مصر , الزاوية الحمرء , تتبيلة الزاوية الحمراء , Tatbela , Mohamed Sayed , Mohamed Skepr , Mohamed Sayed Skepr , Mohamed Sayed AbdElalem ,iskrpr , itskepr, qwsdxccc">
   <meta name="author" content="Mohamed Sayed , mohamed sayed skepr, skepr , محمد سيد , سكيبر ,محمد سيد عبدالعليم">
@@ -19,6 +21,11 @@
 </head>
 
 <body>
+  <div id="preloader">
+    <img src="assets/imgs/tatbelalogo.svg" alt="tatbela logo skepr مطعم تتبيلة ,ملوك الكريب في مصر"><br>
+    <a class="power" href="https://iskepr.web.app">تم برمجة الموقع بواسطة <span>@سكيبر</span></a>
+  </div>
+  <img class="pflag" src="assets/imgs/palestine.webp" alt="free palestine for ever tatbela Restaurant">
   <header>
     <a href="menu.html">
       <div class="but">
@@ -34,12 +41,118 @@
     <a href="cart.html">
       <div class="but active">
         <div class="icon">
+          <span id="cartball"></span>
           <img src="assets/imgs/carticon.svg" alt="">
         </div>
         <h3>السلة</h3>
       </div>
     </a>
   </header>
+  <!-- alart -->
+  <div class="alert"></div>
+  <!-- سيتم هنا إضافة الأقسام -->
+  <div id="products-container"></div>
+
+  <script src="js/jquery-3.7.1.min.js"></script>
+  <script src="js/aos.js"></script>
+  <script src="main.js"></script>
+  <script>
+    AOS.init();
+
+    // جلب البيانات من ملف JSON
+    $.ajax({
+      url: "data/products.json",
+      dataType: "json",
+      caches: true,
+      success: function (data, status) {
+        // تجميع المنتجات حسب النوع
+        let groupedByType = {};
+        $.each(data, function (index, product) {
+          if (!groupedByType[product.النوع]) {
+            groupedByType[product.النوع] = [];
+          }
+          groupedByType[product.النوع].push(product);
+        });
+
+        // عرض كل نوع في سيكشن منفصل
+        $.each(groupedByType, function (type, products) {
+          let sectionHTML = `
+            <section class="scrollprod ${type.length % 2 ? 'newproducts' : ''}" data-aos="fade-up">
+              <img class="logoframe" src="assets/imgs/logoframe.svg" alt="">
+              <div class="top">
+                <div class="text">
+                  <h2>أحدث الوجبات</h2>
+                  <h3>${type}</h3>
+                </div>
+                <a href="#" class="mainbut" onclick="shareLink(event)">مشاركة</a>
+              </div>
+              <div class="products">`;
+
+          // إضافة المنتجات التي تنتمي لهذا النوع
+          $.each(products, function (index, product) {
+            sectionHTML += `
+              <a href="product.html?id=${product.المعرف}">
+                <div class="product">
+                  <img src="${product.الصورة}" alt="${product.الاسم}">
+                  <div class="detals">
+                    <h2><span>${product.الاسم}</span></h2>
+                    <h4>${product.وصف}</h4>
+                    <h2><span>${product.السعر}</span> جنية</h2>
+                  </div>
+                </div>
+              </a>`;
+          });
+
+          sectionHTML += `</div></section>`;
+
+          // إضافة القسم إلى الصفحة
+          $("#products-container").append(sectionHTML);
+        });
+      },
+      error: function (xhr, textStatus, err) {
+        console.error(xhr);
+        console.error(err);
+        console.error(textStatus);
+        console.error(xhr.statusText);
+      }
+    });
+  </script>
+  <script>
+    function shareLink(event) {
+      event.preventDefault(); // منع الرابط من الانتقال مباشرة
+
+      const shareData = {
+        title: 'زيارة موقع تتبيلة',
+        text: 'تصفح أشهى الوجبات في مطعم تتبيلة.',
+        url: window.location.href // رابط الموقع الحالي
+      };
+
+      // تحقق مما إذا كانت ميزة المشاركة مدعومة
+      if (navigator.share) {
+        navigator.share(shareData)
+          .then(() => console.log('تمت المشاركة بنجاح'))
+          .catch((error) => console.error('حدث خطأ أثناء المشاركة:', error));
+      } else {
+        // في حالة عدم دعم ميزة المشاركة، يمكنك فتح الرابط في نافذة جديدة أو عرض رابط
+        alert('لا يدعم متصفحك ميزة المشاركة. يمكنك نسخ الرابط: ' + shareData.url);
+        event.preventDefault(); // منع الرابط من الانتقال مباشرة
+
+        const url = window.location.href; // رابط الموقع الحالي
+
+        // استخدام clipboard API لنسخ الرابط
+        navigator.clipboard.writeText(url)
+          .then(() => {
+            // عرض رسالة تأكيد بعد النسخ
+            alert('تم نسخ الرابط إلى الحافظة: ' + url);
+          })
+          .catch((error) => {
+            console.error('حدث خطأ أثناء نسخ الرابط:', error);
+            alert('حدث خطأ، لا يمكن نسخ الرابط.', error);
+          });
+      }
+    }
+  </script>
+
 </body>
 
 </html>
