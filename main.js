@@ -70,11 +70,12 @@ function displayCart() {
     total += parseFloat(product.price) * product.quantity; // حساب المجموع
 
     cartHTML += `
-                <a href="product.html?id=${product.id}">
                 <div class="cart-item" data-index="${index}">
                     <div class="detals">
+                      <a href="product.html?id=${product.id}">
                         <h3>${product.name}</h3>
                         <p>السعر: ${product.price} جنيه</p>
+                      </a>
                         <div class="quantity-controls">
                             <button class="decrease-quantity mainbut">-</button>
                             <span>الكمية: ${product.quantity}</span>
@@ -82,8 +83,10 @@ function displayCart() {
                         </div>
                         <button class="remove-item mainbut">حذف المنتج</button>
                     </div>
+                    <a href="product.html?id=${product.id}">
                     <img src="${product.image}" alt="${product.name}">
-                </div></a>
+                    </a>
+                </div>
             `;
   });
   if (cartItemsContainer) {
