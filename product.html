@@ -18,6 +18,8 @@
     <!-- style -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="css/aos.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </head>
 
 <body>
@@ -109,22 +111,30 @@
 
     <script src="main.js"></script>
     <script src="js/aos.js"></script>
-    <script src="js/jquery-3.7.1.min.js"></script>
     <script>
         AOS.init();
-
-        // قراءة المعرف من الرابط
+    </script>
+    <script>
+        // قراءة id من الرابط
         const urlParams = new URLSearchParams(window.location.search);
         const productId = urlParams.get('id');
-
-        // تحميل بيانات المنتجات
-        fetch('data/products.json')
-            .then(response => response.json())
-            .then(data => {
-                // البحث عن المنتج
-                const product = data.find(item => item.المعرف == productId);
-
-                // التحقق من وجود المنتج
+    
+        document.addEventListener("DOMContentLoaded", async () => {
+            const supabaseUrl = 'https://muxhkzdlulrsrskhqgsp.supabase.co';
+            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im11eGhremRsdWxyc3Jza2hxZ3NwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYwODM4NzcsImV4cCI6MjA1MTY1OTg3N30.WAbPm9IhEX-aS5An5fxrmMVd4JdIgxA2Qhypu_6gMQY';
+            const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+    
+            try {
+                // جلب بيانات المنتج من Supabase
+                const { data, error } = await supabase
+                    .from('products') // تأكد من أن اسم الجدول "products"
+                    .select('*')
+                    .eq('id', productId); // تحديد المنتج باستخدام id
+    
+                if (error) throw error;
+    
+                // إذا تم العثور على المنتج
+                const product = data[0];
                 if (product) {
                     // تحديث محتويات الصفحة بالبيانات
                     document.getElementById('product-image').src = product.الصورة;
@@ -132,54 +142,56 @@
                     document.getElementById('product-description').textContent = product.وصف;
                     document.getElementById('product-ingredients').textContent = product.المكونات;
                     document.getElementById('product-price').textContent = product.السعر;
-
+    
                     // احصل على نوع المنتج
                     const productType = product.النوع;
-
+    
                     // تصفية المنتجات بناءً على النوع
-                    const sameTypeProducts = data.filter(item => item.النوع === productType && item.المعرف != product.المعرف);
-
+                    const { data: sameTypeProducts, error: typeError } = await supabase
+                        .from('products')
+                        .select('*')
+                        .eq('النوع', productType)
+                        .neq('id', product.id); // استبعاد المنتج الحالي من النتيجة
+    
+                    if (typeError) throw typeError;
+    
                     // تأكد من أن العنصر products موجود
                     if (sameTypeProducts.length === 0) {
                         let scroll = document.querySelector(".scrollprod");
                         scroll.style.display = "none";
                         return;
                     }
-
+    
                     // عرض المنتجات التي من نفس النوع
-                    $.each(sameTypeProducts, function (index, sameProduct) {
-                        $(".products")
-                            .append(
-                                `<a href="product.html?id=` + sameProduct.المعرف + `">
-                            <div class="product" id="product-` + sameProduct.المعرف + `">
-                                <img src="` + sameProduct.الصورة + `" alt="` + sameProduct.الاسم + ` tatbela">
-                                <div class="detals">
-                                    <h2><span>` + sameProduct.الاسم + `</span></h2>
-                                    <h4>` + sameProduct.وصف + `</h4>
-                                    <h2><span>` + sameProduct.السعر + `</span> جنية</h2>
+                    sameTypeProducts.forEach(sameProduct => {
+                        document.querySelector(".products").innerHTML += `
+                            <a href="product.html?id=${sameProduct.id}">
+                                <div class="product" id="product-${sameProduct.id}">
+                                    <img src="${sameProduct.الصورة}" alt="${sameProduct.الاسم}">
+                                    <div class="detals">
+                                        <h2><span>${sameProduct.الاسم}</span></h2>
+                                        <h4>${sameProduct.وصف}</h4>
+                                        <h2><span>${sameProduct.السعر}</span> جنية</h2>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>`
-                            );
+                            </a>`;
                     });
                 } else {
                     alert("المنتج غير موجود");
                 }
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error("حدث خطأ في تحميل البيانات", error);
-            });
-
-
+            }
+        });
+    
         // عند الضغط على زر "أضف إلى السلة"
         function addtocart() {
-
             // استرجاع بيانات المنتج من الصفحة
             const productId = urlParams.get('id');
             const productName = document.getElementById('product-name').textContent;
             const productPrice = document.getElementById('product-price').textContent;
             const productImage = document.getElementById('product-image').src;
-
+    
             // هيكل المنتج
             const product = {
                 id: productId,
@@ -188,14 +200,14 @@
                 image: productImage,
                 quantity: 1 // يمكن تغيير الكمية بناءً على متطلباتك
             };
-
+    
             // استرجاع السلة الحالية من localStorage
             let cart = localStorage.getItem('cart');
             cart = cart ? JSON.parse(cart) : [];
-
+    
             // البحث عن المنتج في السلة بناءً على id
             const existingProductIndex = cart.findIndex(item => item.id === productId);
-
+    
             if (existingProductIndex !== -1) {
                 // إذا كان المنتج موجود بالفعل، زيادة الكمية
                 cart[existingProductIndex].quantity += 1;
@@ -203,10 +215,10 @@
                 // إذا لم يكن موجود، أضفه للسلة
                 cart.push(product);
             }
-
+    
             // تحديث السلة في localStorage
             localStorage.setItem('cart', JSON.stringify(cart));
-
+    
             document.querySelector('.alert').innerHTML = 'تمت إضافة المنتج إلى السلة!';
             document.querySelector('.alert').style.transform = 'translate(0px)';
             setTimeout(function () {
@@ -214,6 +226,7 @@
             }, 3000);
         }
     </script>
+    
 </body>
 
 </html>

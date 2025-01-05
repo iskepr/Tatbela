@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tatbela - تتبيلة</title>
+  <link rel="shortcut icon" href="../assets/imgs/tatbelalogo.svg" type="image/x-icon">
+
+  <meta name="description" content="مطعم تتبيلة ,ملوك الكريب في مصر👑🔥">
+  <meta name="google-site-verification" content="2GOHGN8OibdcrOzxm623zqvHhH4RQ3907cSktTndfec" />
+
+  <meta name="keywords"
+    content="كريب سيد , مطعم تتبيلة , تتبيلة , سكيبر , محمد سكيبر , محمد سيد سكيبر , مصر , الزاوية الحمرء , تتبيلة الزاوية الحمراء , Tatbela , Mohamed Sayed , Mohamed Skepr , Mohamed Sayed Skepr , Mohamed Sayed AbdElalem ,iskrpr , itskepr, qwsdxccc">
+  <meta name="author" content="Mohamed Sayed , mohamed sayed skepr, skepr , محمد سيد , سكيبر ,محمد سيد عبدالعليم">
+
+  <meta property="og:image" content="assets/imgs/Screenshot.png">
+  <meta property="twitter:image" content="assets/imgs/Screenshot.png">
+  <!-- style -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../css/aos.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+
+<body>
+  <div class="pass">
+    <h1>ادخل كلمة المرور</h1><input type="number"min="1" max="6" id="password">
+  </div>
+  <div id="preloader">
+    <img src="../assets/imgs/tatbelalogo.svg" alt="tatbela logo skepr مطعم تتبيلة ,ملوك الكريب في مصر"><br>
+    <a class="power" href="https://iskepr.web.app">تم برمجة الموقع بواسطة <span>@سكيبر</span></a>
+  </div>
+  <header>
+    <a href="../menu.html">
+      <div class="but">
+        <div class="icon">
+          <img src="../assets/imgs/menuicon.svg" alt="مطعم تتبيلة ,ملوك الكريب في مصر">
+        </div>
+        <h3>المينيو</h3>
+      </div>
+    </a>
+    <div class="logo">
+      <a href="../index.html"><img src="../assets/imgs/tatbelalogo.svg"
+          alt="Tatbela logo مطعم تتبيلة ,ملوك الكريب في مصر"></a>
+    </div>
+    <a href="../cart.html">
+      <div class="but">
+        <div class="icon">
+          <span id="cartball"></span>
+          <img src="../assets/imgs/carticon.svg" alt="مطعم تتبيلة ,ملوك الكريب في مصر">
+        </div>
+        <h3>السلة</h3>
+      </div>
+    </a>
+  </header>
+  <!-- alart -->
+  <div class="alert"></div>
+  <!-- data nums -->
+  <div class="data">
+    <div class="num">
+      <svg width="60px" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="6" r="4" stroke="#fff" stroke-width="1.5" />
+        <path d="M18 9C19.6569 9 21 7.88071 21 6.5C21 5.11929 19.6569 4 18 4" stroke="#fff" stroke-width="1.5"
+          stroke-linecap="round" />
+        <path d="M6 9C4.34315 9 3 7.88071 3 6.5C3 5.11929 4.34315 4 6 4" stroke="#fff" stroke-width="1.5"
+          stroke-linecap="round" />
+        <path
+          d="M17.1973 15C17.7078 15.5883 18 16.2714 18 17C18 19.2091 15.3137 21 12 21C8.68629 21 6 19.2091 6 17C6 14.7909 8.68629 13 12 13C12.3407 13 12.6748 13.0189 13 13.0553"
+          stroke="#fff" stroke-width="1.5" stroke-linecap="round" />
+        <path d="M20 19C21.7542 18.6153 23 17.6411 23 16.5C23 15.3589 21.7542 14.3847 20 14" stroke="#fff"
+          stroke-width="1.5" stroke-linecap="round" />
+        <path d="M4 19C2.24575 18.6153 1 17.6411 1 16.5C1 15.3589 2.24575 14.3847 4 14" stroke="#fff" stroke-width="1.5"
+          stroke-linecap="round" />
+      </svg>
+      <h2 id="usersNum">0</h2>
+    </div>
+    <div class="num">
+      <svg width="60px" viewBox="0 0 24 24" fill="none">
+        <path
+          d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
+          stroke="#fff" stroke-width="1.5" />
+        <path
+          d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
+          stroke="#fff" stroke-width="1.5" />
+        <path d="M11 10.8L12.1429 12L15 9" stroke="#fff" stroke-width="1.5" stroke-linecap="round"
+          stroke-linejoin="round" />
+        <path
+          d="M2 3L2.26121 3.09184C3.5628 3.54945 4.2136 3.77826 4.58584 4.32298C4.95808 4.86771 4.95808 5.59126 4.95808 7.03836V9.76C4.95808 12.7016 5.02132 13.6723 5.88772 14.5862C6.75412 15.5 8.14857 15.5 10.9375 15.5H12M16.2404 15.5C17.8014 15.5 18.5819 15.5 19.1336 15.0504C19.6853 14.6008 19.8429 13.8364 20.158 12.3075L20.6578 9.88275C21.0049 8.14369 21.1784 7.27417 20.7345 6.69708C20.2906 6.12 18.7738 6.12 17.0888 6.12H11.0235M4.95808 6.12H7"
+          stroke="#fff" stroke-width="1.5" stroke-linecap="round" />
+      </svg>
+      <h2 id="ordersNum">0</h2>
+    </div>
+    <div class="num">
+      <svg xmlns="http://www.w3.org/2000/svg" width="50px" viewBox="0 0 24 24" id="meteor-icon-kit__regular-products"
+        fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M10 9C9.44771 9 9 9.44771 9 10V21C9 21.5523 9.44771 22 10 22H21C21.5523 22 22 21.5523 22 21V10C22 9.44771 21.5523 9 21 9H10ZM15 7V3C15 2.44772 14.5523 2 14 2H3C2.44772 2 2 2.44772 2 3V14C2 14.5523 2.44772 15 3 15H7V10C7 8.34315 8.34315 7 10 7H15ZM17 7H21C22.6569 7 24 8.34315 24 10V21C24 22.6569 22.6569 24 21 24H10C8.34315 24 7 22.6569 7 21V17H3C1.34315 17 0 15.6569 0 14V3C0 1.34315 1.34315 0 3 0H14C15.6569 0 17 1.34315 17 3V7Z"
+          fill="#fff" />
+      </svg>
+      <h2 id="productsNum">0</h2>
+    </div>
+  </div>
+  <!-- orders -->
+  <div id="ordersDev" class="ordersDev">
+  </div>
+
+  <script src="../main.js"></script>
+  <script src="../js/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+  <script src="main.js"></script>
+
+</body>
+
+</html>

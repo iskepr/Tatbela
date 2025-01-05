@@ -19,6 +19,7 @@
   <!-- style -->
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="css/aos.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -179,82 +180,67 @@
 
   <script src="main.js"></script>
   <script src="js/aos.js"></script>
-  <script src="js/jquery-3.7.1.min.js"></script>
   <script>
     AOS.init();
-
-    $.ajax({
-      url: "data/products.json",
-      dataType: "json",
-      caches: true,
-      success: function (data, status) {
-        // فرز المنتجات بناءً على عدد المبيعات
-        data.sort(function (a, b) {
-          return b.المبيعات - a.المبيعات; // ترتيب تنازلي بناءً على عدد المبيعات
-        });
-        // تحدييد عدد المنتجات
-        data = data.slice(0, 10);
-
-        // عرض المنتجات بعد الفرز
-        $.each(data, function (index) {
-          $("#topsall")
-            .append(
-              `<a href="` + "product.html?id=" + data[index].المعرف + `"><div class="product" id="product-` + index + `">
-            <img src="` + data[index].الصورة + `" alt="` + data[index].الاسم + `">
-            <div class="detals">
-              <h2><span>` + data[index].الاسم + `</span></h2>
-              <h4>` + data[index].وصف + `</h4>
-              <h2><span>` + data[index].السعر + `</span> جنية</h2>
-            </div>
-          </div></a>`
-            );
-        });
-      },
-      error: function (xhr, textStatus, err) {
-        console.error(xhr);
-        console.error(err);
-        console.error(textStatus);
-        console.error(xhr.statusText);
-      }
-    });
-    // short by last add
-    $.ajax({
-      url: "data/products.json",
-      dataType: "json",
-      caches: true,
-      success: function (data, status) {
-        // فرز المنتجات بناءً على عدد المبيعات
-        data.sort(function (a, b) {
-          return b.المعرف - a.المعرف; // ترتيب تنازلي بناءً على عدد المبيعات
-        });
-
-        // تحدييد عدد المنتجات
-        data = data.slice(0, 10);
-
-        // عرض المنتجات بعد الفرز
-        $.each(data, function (index) {
-          $("#lasts")
-            .append(
-              `<a href="` + "product.html?id=" + data[index].المعرف + `"><div class="product" id="product-` + index + `">
-            <img src="` + data[index].الصورة + `" alt="` + data[index].الاسم + `مطعم تتبيلة ,ملوك الكريب في مصر">
-            <div class="detals">
-              <h2><span>` + data[index].الاسم + `</span></h2>
-              <h4>` + data[index].وصف + `</h4>
-              <h2><span>` + data[index].السعر + `</span> جنية</h2>
-            </div>
-          </div></a>`
-            );
-        });
-      },
-      error: function (xhr, textStatus, err) {
-        console.error(xhr);
-        console.error(err);
-        console.error(textStatus);
-        console.error(xhr.statusText);
-      }
-    });
-
   </script>
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const supabaseUrl = 'https://muxhkzdlulrsrskhqgsp.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im11eGhremRsdWxyc3Jza2hxZ3NwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYwODM4NzcsImV4cCI6MjA1MTY1OTg3N30.WAbPm9IhEX-aS5An5fxrmMVd4JdIgxA2Qhypu_6gMQY';
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+    try {
+      // جلب البيانات من Supabase
+      const { data: products, error } = await supabase
+        .from('products')
+        .select('*');
+
+      if (error) {
+        console.error('Error fetching data:', error);
+        return;
+      }
+
+      // ترتيب المنتجات حسب المبيعات
+      const topSelling = [...products].sort((a, b) => b.المبيعات - a.المبيعات).slice(0, 10);
+      const latestAdded = [...products].sort((a, b) => b.المعرف - a.المعرف).slice(0, 10);
+
+      // عرض المنتجات الأكثر مبيعًا
+      const topsAll = document.getElementById("topsall");
+      topSelling.forEach(product => {
+        topsAll.innerHTML += `
+          <a href="product.html?id=${product.id}">
+            <div class="product">
+              <img src="${product.الصورة}" alt="${product.الاسم}">
+              <div class="detals">
+                <h2><span>${product.الاسم}</span></h2>
+                <h4>${product.وصف}</h4>
+                <h2><span>${product.السعر}</span> جنية</h2>
+              </div>
+            </div>
+          </a>`;
+      });
+
+      // عرض المنتجات الأحدث
+      const lasts = document.getElementById("lasts");
+      latestAdded.forEach(product => {
+        lasts.innerHTML += `
+          <a href="product.html?id=${product.id}">
+            <div class="product">
+              <img src="${product.الصورة}" alt="${product.الاسم}">
+              <div class="detals">
+                <h2><span>${product.الاسم}</span></h2>
+                <h4>${product.وصف}</h4>
+                <h2><span>${product.السعر}</span> جنية</h2>
+              </div>
+            </div>
+          </a>`;
+      });
+    } catch (error) {
+      console.error('Error in fetch:', error);
+    }
+  });
+</script>
+
 </body>
 
 </html>

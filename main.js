@@ -57,9 +57,11 @@ function displayCart() {
 
   if (cart.length === 0) {
     cartball.style.display = "none";
-    document.getElementById("checkout-button").style.display = "none";
-    cartItemsContainer.innerHTML = "<h1>فارغة</h1>";
-    cartTotalContainer.textContent = "";
+    if (document.getElementById("checkout-button") !== null) {
+      document.getElementById("checkout-button").style.display = "none";
+      cartItemsContainer.innerHTML = "<h1>فارغة</h1>";
+      cartTotalContainer.textContent = "";
+    }
     return;
   }
 
@@ -184,53 +186,68 @@ if (document.getElementById("submit-customer-info")) {
     });
 }
 // دالة لإرسال الطلب
-function sendOrder(name, phone, address) {
+async function sendOrder(name, phone, address) {
+  // إعداد الاتصال بـ Supabase
+  const supabaseUrl = "https://muxhkzdlulrsrskhqgsp.supabase.co";
+  const supabaseKey =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im11eGhremRsdWxyc3Jza2hxZ3NwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYwODM4NzcsImV4cCI6MjA1MTY1OTg3N30.WAbPm9IhEX-aS5An5fxrmMVd4JdIgxA2Qhypu_6gMQY";
+  const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+  // استرجاع محتويات السلة من LocalStorage
   let cart = JSON.parse(localStorage.getItem("cart"));
-  let orderDetails = cart
-    .map(
-      (product) => `
-    <div style="
-      background-color: #111111;
-      color:  #ffffff;
-      margin: 10px 0; 
-      border-bottom: 1px solid #gray;">
-      <img style="border-radius: 16px;" width="100" src="https://iskepr.github.io/Tatbela/assets/imgs/${product.id}.png">
-      <a style="color: #fff; font-weight: bold;" href="https://iskepr.github.io/Tatbela/product.html?id=${product.id}">${product.name}</a>
-      (سعر: ${product.price} جنيه ، كمية: ${product.quantity}) 
-      <br>
-    </div>`
-    )
-    .join("\n");
+  if (!cart || cart.length === 0) {
+    alert("السلة فارغة!");
+    return;
+  }
 
-  let orderEmail = `
-    <div style="background-color: #111111; color:  #ffffff; padding: 10px;border-radius: 20px;">
-      طلب جديد من: ${name}<br>
-      رقم الهاتف: ${phone}<br>
-      العنوان: ${address}<br>
-      <hr>
-      تفاصيل المنتجات:<br>
-      ${orderDetails}<br>
-      <a style="color: #fff; font-weight: bold;" class="power" href="https://iskepr.web.app">تم برمجة الموقع بواسطة <span style="color: #ecc243;">@سكيبر</span>
-      </a>
-    </div>
-  `;
+  // تجهيز تفاصيل الطلب
+  let orderDetails = cart.map((product) => ({
+    product_id: product.id,
+    image: product.image,
+    name: product.name,
+    price: product.price,
+    quantity: product.quantity,
+  }));
 
-  Email.send({
-    SecureToken: "d08980c7-8f23-4bc5-9d8f-37f618605096",
-    To: "skeprfuc@gmail.com",
-    From: "skeprfuc@gmail.com",
-    Subject: "طلب جديد من تتبيلة",
-    Body: orderEmail,
-  }).then((message) => {
+  // إنشاء كائن الطلب
+  const order = {
+    customer: name,
+    phone: phone,
+    address: address,
+    products: orderDetails,
+    total: cart.reduce(
+      (total, product) => total + product.price * product.quantity,
+      0
+    ),
+  };
+
+  try {
+    // إرسال الطلب إلى Supabase
+    const { data, error } = await supabase
+      .from("orders") // اسم الجدول في Supabase
+      .insert([order]); // إدخال الطلب
+
+    if (error) {
+      console.error("Error inserting order:", error);
+      alert("حدث خطأ أثناء إرسال الطلب.");
+      return;
+    }
+
+    // عرض رسالة نجاح
     document.querySelector(".alert").innerHTML = "تم إرسال الطلب بنجاح!";
     document.querySelector(".alert").style.transform = "translate(0px)";
-    setTimeout(function () {
+    setTimeout(() => {
       document.querySelector(".alert").style.transform = "translate(400px)";
     }, 3000);
-    localStorage.removeItem("cart"); // مسح السلة بعد الإرسال
+
+    // تنظيف السلة
+    localStorage.removeItem("cart");
     displayCart(); // تحديث العرض بعد الشراء
     window.location.href = "index.html";
-  });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    alert("حدث خطأ غير متوقع.");
+  }
 }
 
 // عرض السلة عند تحميل الصفحة
